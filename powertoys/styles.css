@@ -1,0 +1,125 @@
+:root {
+  --bg-color: #ffffff;
+  --text-color: #333333;
+  --button-bg: #f0f0f0;
+  --button-hover: #e0e0e0;
+  --button-active: #d0d0d0;
+  --border-color: #cccccc;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --accent-color: #4285f4;
+  --status-on: #34a853;
+  --status-off: #ea4335;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color: #202124;
+    --text-color: #e8eaed;
+    --button-bg: #3c4043;
+    --button-hover: #4a4d51;
+    --button-active: #5a5d61;
+    --border-color: #5f6368;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --accent-color: #8ab4f8;
+    --status-on: #81c995;
+    --status-off: #f28b82;
+  }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  width: 320px;
+  min-height: 300px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.container {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+h1 {
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 8px;
+  color: var(--accent-color);
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.tool-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 8px;
+  background-color: var(--button-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px var(--shadow-color);
+  position: relative;
+  overflow: hidden;
+}
+
+.tool-button:hover {
+  background-color: var(--button-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+.tool-button:active {
+  background-color: var(--button-active);
+  transform: translateY(0);
+  box-shadow: 0 1px 2px var(--shadow-color);
+}
+
+.icon {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.status {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 10px;
+  background-color: var(--status-on);
+  color: white;
+}
+
+.status.off {
+  background-color: var(--status-off);
+}
+
+.footer {
+  margin-top: 8px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-color);
+  opacity: 0.7;
+}
