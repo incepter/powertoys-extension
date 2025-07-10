@@ -169,47 +169,8 @@ document.addEventListener('DOMContentLoaded', function() {
   // Export page as clean PDF
   document.getElementById('export-pdf').addEventListener('click', function() {
     executeScript(() => {
-      // Create a clean version of the page for printing
-      const originalBody = document.body.innerHTML;
-
-      // Function to create a clean version of the page
-      function createCleanPage() {
-        // Clone the body to avoid modifying the original
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = document.body.innerHTML;
-
-        // Remove common elements that are not needed in a PDF
-        const selectorsToRemove = [
-          'script', 'iframe', 'noscript', 'style', 'svg',
-          'nav', 'header', 'footer', 'aside',
-          '.ad', '.ads', '.advertisement', '.banner',
-          '.cookie', '.popup', '.modal', '.overlay',
-          '.social', '.share', '.comment', '.newsletter',
-          '[class*="cookie"]', '[class*="popup"]', '[class*="modal"]',
-          '[class*="overlay"]', '[class*="ad-"]', '[id*="ad-"]'
-        ];
-
-        selectorsToRemove.forEach(selector => {
-          tempDiv.querySelectorAll(selector).forEach(el => {
-            el.remove();
-          });
-        });
-
-        // Return the cleaned HTML
-        return tempDiv.innerHTML;
-      }
-
-      // Replace the body with a clean version
-      document.body.innerHTML = createCleanPage();
-
       // Trigger the print dialog
       window.print();
-
-      // Restore the original page after a short delay
-      setTimeout(() => {
-        document.body.innerHTML = originalBody;
-      }, 1000);
-
       return true;
     }, (results) => {
       showFeedback('Preparing PDF export...');
