@@ -1,6 +1,35 @@
 document.addEventListener('DOMContentLoaded', function() {
   let designModeEnabled = false;
   let highlighterEnabled = false;
+  let meetAuthUser = 1;
+
+  // Helpers for storage (persist authuser)
+  function getStoredAuthUser() {
+    try {
+      chrome.storage && chrome.storage.sync.get({ meetAuthUser: 1 }, (res) => {
+        meetAuthUser = Number(res.meetAuthUser) || 1;
+        updateMeetBadge();
+      });
+    } catch (e) {
+      // ignore if storage not available
+      updateMeetBadge();
+    }
+  }
+
+  function setStoredAuthUser(val) {
+    meetAuthUser = val;
+    updateMeetBadge();
+    try {
+      chrome.storage && chrome.storage.sync.set({ meetAuthUser: meetAuthUser });
+    } catch (e) {
+      // ignore
+    }
+  }
+
+  function updateMeetBadge() {
+    const badge = document.getElementById('meet-auth-badge');
+    if (badge) badge.textContent = String(meetAuthUser);
+  }
 
   // Enable all disabled inputs
   document.getElementById('enable-inputs').addEventListener('click', function() {
@@ -66,6 +95,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
       // Process elements with visibility:hidden, excluding script and link tags
       processElements('*:not(script):not(link):not(style):not(title)', 'visibility', 'hidden');
+
+      // Process inputs with type:hidden
+      for (const element of document.querySelectorAll('input[type="hidden"]')) {
+        element.type = 'text';
+        hiddenElements.push(element)
+      }
 
       // Add a subtle highlight to revealed elements
       hiddenElements.forEach(element => {
@@ -215,6 +250,7 @@ document.addEventListener('DOMContentLoaded', function() {
             removedCount++;
           }
         });
+
       });
 
       // Also remove body classes that might disable scrolling
@@ -237,6 +273,35 @@ document.addEventListener('DOMContentLoaded', function() {
       showFeedback(`Removed ${count} overlay${count !== 1 ? 's' : ''}`);
     });
   });
+
+  // New Google Meet tool handlers (open new Meet and select authuser)
+  const newMeetBtn = document.getElementById('new-meet');
+  if (newMeetBtn) {
+    // Initialize stored user id and badge
+    getStoredAuthUser();
+
+    // Left-click: open Meet; Shift+click: decrement user id
+    newMeetBtn.addEventListener('click', function(e) {
+      if (e.shiftKey) {
+        const next = (Number(meetAuthUser) - 1 + 10) % 10;
+        setStoredAuthUser(next);
+        return;
+      }
+      const url = `https://meet.google.com/new?authuser=${encodeURIComponent(meetAuthUser)}`;
+      try {
+        chrome.tabs.create({ url });
+      } catch (err) {
+        window.open(url, '_blank');
+      }
+    });
+
+    // Right-click: increment and persist
+    newMeetBtn.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+      const next = (Number(meetAuthUser) + 1) % 10;
+      setStoredAuthUser(next);
+    });
+  }
 
   // Helper function to execute scripts in the active tab
   function executeScript(func, callback, ...args) {
