@@ -11,9 +11,9 @@ A collection of power tools for web browsing, designed to enhance your browsing 
 - **Highlighter**: Allow highlighting and marking sections on any webpage
 - **Export as PDF**: Export the current page as a clean PDF without ads or distractions
 - **Remove Overlays**: Remove annoying overlays, modals, and popups from the page
+- **New Meet**: Open a fresh Google Meet using a chosen Google account (authuser), with a quick selector right in the popup
 
 ## Installation
-
 Since this is a local extension, you'll need to install it manually:
 
 1. Clone or download this repository
@@ -33,6 +33,7 @@ Since this is a local extension, you'll need to install it manually:
    - **Highlighter**: Click to toggle the highlighter tool (click or drag on page elements to highlight them)
    - **Export as PDF**: Click to create a clean version of the page and open the print dialog for PDF export
    - **Remove Overlays**: Click to remove annoying overlays, modals, and popups from the current page
+   - **New Meet**: Left‑click to open https://meet.google.com/new with the selected Google account. Right‑click the button to cycle the account number (authuser). Shift+click to decrement. The chosen number is shown on the badge and is remembered.
 
 ## Dark Mode Support
 
@@ -47,7 +48,8 @@ PowerToys automatically adapts to your system's color scheme preferences. It wil
 - **Highlighter**: Remains active until toggled off, allowing you to highlight multiple elements across the page.
 - **Export as PDF**: Creates a clean version of the page by removing ads, navigation, and other distractions before opening the print dialog.
 - **Remove Overlays**: Intelligently identifies and removes elements that are likely to be overlays, modals, or popups based on their styling and position.
-- This extension requires permission to access and modify the current tab's content.
+- **New Meet**: Shows a small badge with the current authuser value (0–9). Right‑click to increase, Shift+click to decrease.
+- Permissions: The extension requires access to the active tab to run tools, uses the scripting API to inject code, and storage to remember your Meet account badge.
 
 ## Development
 
@@ -59,4 +61,4 @@ To modify this extension:
 
 ## Icons
 
-The extension uses placeholder icons. Before publishing, replace the placeholder icons in the `icons` directory with custom icons following the guidelines in the icons README.
+The extension ships with placeholder icons. Replace them with your own in `icons/` before publishing.
